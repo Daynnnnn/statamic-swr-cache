@@ -1,0 +1,27 @@
+{
+    "name": "daynnnnn/statamic-swr-cache",
+    "description": "Allows you to add stale while revalidate functionality to the application static cache driver.",
+    "autoload": {
+        "psr-4": {
+            "Daynnnnn\\Statamic\\SwrCache\\": "src"
+        }
+    },
+    "extra": {
+        "statamic": {
+            "name": "Statamic SWR Static Cache",
+            "description": "Allows you to use cloudfront as a statamic cache strategy."
+        },
+        "laravel": {
+            "providers": [
+                "Daynnnnn\\Statamic\\SwrCache\\ServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "statamic/cms": "^3.0"
+    },
+    "require-dev": {
+        "nunomaduro/larastan": "^0.7.13",
+        "orchestra/testbench": "^6.22"
+    }
+}
