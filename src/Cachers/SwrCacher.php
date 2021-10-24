@@ -55,16 +55,18 @@ class SwrCacher extends ApplicationCacher
 
         $key = $this->makeHash($url);
 
+        $page = $this->cache->get($this->normalizeKey('responses:'.$key));
+
         $ttl = $this->cache
                     ->getStore()
                     ->getRedis()
                     ->connection('cache')
                     ->ttl($this->cache->getStore()->getPrefix().$this->normalizeKey('responses:'.$key));
 
-        if (($this->config('expiry') - $this->config('stale')) * 60 > $ttl) {
+        if (!is_null($page) && ($this->config('expiry') - $this->config('stale')) * 60 > $ttl) {
             RevalidatePage::dispatch($request->fullUrl());
         }
 
-        return $this->cache->get($this->normalizeKey('responses:'.$key));
+        return $page;
     }
 }
