@@ -4,12 +4,13 @@ namespace Daynnnnn\Statamic\SwrCache\Jobs;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Cache\Repository;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Http\Request;
 use Illuminate\Queue\InteractsWithQueue;
 
-class RevalidatePage implements ShouldQueue
+class RevalidatePage implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable;
 
@@ -38,5 +39,15 @@ class RevalidatePage implements ShouldQueue
         $request = Request::create($this->url, 'GET');
         app()->handle($request);
         config(['statamic.static_swr.revalidate' => false]);
+    }
+
+    /**
+     * The unique ID of the job.
+     *
+     * @return string
+     */
+    public function uniqueId()
+    {
+        return md5($this->url);
     }
 }
